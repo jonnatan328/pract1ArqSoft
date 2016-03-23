@@ -84,6 +84,7 @@ public class ClientServlet extends HttpServlet {
             }
             else if("SearchAll".equalsIgnoreCase(action)){
                 lista=clientDao.getAllClient();
+                System.out.println("Clientes");
             }
                 
                 
