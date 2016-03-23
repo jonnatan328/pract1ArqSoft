@@ -1,0 +1,16 @@
+td{
+    height: 50px;
+    vertical-align: bottom;
+}
+.navbar {
+                margin-bottom: 50;
+                border-radius: 50;
+            }
+            
+body {
+    //background-image: url('<?php echo base_url()?>/img/fondo_cafe.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+                
+
