@@ -42,23 +42,14 @@ public class ClientServlet extends HttpServlet {
             //capturo los campos de nombre, apellido y direccion
             String name=request.getParameter("name");
             String lastname=request.getParameter("lastname");
-            String adress=request.getParameter("adress");
+            String address=request.getParameter("address");
             //Tomo el valor del campo telephone del formulario
-            String telephonestr=request.getParameter("telephone");
-            int telephone=0;
-            //Valido que el campo tenga dato
-            if(telephonestr!=null && !telephonestr.equals(""))
-                //convierto cadena de caracteres a entero
-                telephone=Integer.parseInt(telephonestr);
+            String phone=request.getParameter("phone");
+      
             //Tomo el valor del campo cellphone del formulario
-            String cellphonestr=request.getParameter("cellphone");
-            int cellphone=0;
-            //Valido que el campo tenga dato
-            if(cellphonestr!=null && !cellphonestr.equals(""))
-                //convierto cadena de caracteres a entero
-                cellphone=Integer.parseInt(cellphonestr);
+            String cellphone=request.getParameter("cellphone");
             //llamo el constructor del POJO para crear un objeto
-            Client client=new Client (nrodocument, name, lastname, telephone, adress, cellphone);
+            Client client=new Client (nrodocument, name, lastname, phone, address, cellphone);
             //creamos una lista para cargar los objetos instanciados
             
             List<Client> lista;
@@ -75,8 +66,8 @@ public class ClientServlet extends HttpServlet {
                 request.setAttribute("message", client.getNrodocument());
                 request.setAttribute("message1", client.getName());
                 request.setAttribute("message2", client.getLastname());
-                request.setAttribute("message3", client.getTelephone());
-                request.setAttribute("message4", client.getAdress());
+                request.setAttribute("message3", client.getPhone());
+                request.setAttribute("message4", client.getAddress());
                 request.setAttribute("message5", client.getCellphone());
                 
                 request.getRequestDispatcher("/clientInformation.jsp").forward(request, response);

@@ -26,18 +26,18 @@ public class Client implements Serializable {
    @Column
    private String lastname;
    @Column
-   private long telephone;
+   private String phone;
    @Column
-   private String adress;
+   private String address;
    @Column
-   private long cellphone;
+   private String cellphone;
 
-   public Client(long nrodocument, String name, String lastname, long telephone, String adress, long cellphone) {
+   public Client(long nrodocument, String name, String lastname, String telephone, String adress, String cellphone) {
         this.nrodocument = nrodocument;
         this.name = name;
         this.lastname = lastname;
-        this.telephone = telephone;
-        this.adress = adress;
+        this.phone = telephone;
+        this.address = adress;
         this.cellphone = cellphone;
    }
     
@@ -68,27 +68,27 @@ public class Client implements Serializable {
         this.lastname = lastname;
     }
 
-    public long getTelephone() {
-        return telephone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelephone(long telephone) {
-        this.telephone = telephone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String adress) {
+        this.address = adress;
     }
 
-    public long getCellphone() {
+    public String getCellphone() {
         return cellphone;
     }
 
-    public void setCellphone(long cellphone) {
+    public void setCellphone(String cellphone) {
         this.cellphone = cellphone;
     }
     

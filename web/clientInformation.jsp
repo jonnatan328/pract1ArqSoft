@@ -33,23 +33,23 @@
                <div class="col-md-5">
                   <div class="form-group">
                     <label for="nrodocument">Número documento:</label>
-                    <input type="number" name="nrodocument" class="form-control"  placeholder="identificacion" value="${client.nrodocument}">
+                    <input type="number" name="nrodocument" class="form-control" required="true"  placeholder="identificacion" value="${client.nrodocument}">
                   </div>
                   <div class="form-group">
                     <label for="name">First Name:</label>
-                    <input type="text" name="name" class="form-control" placeholder="Nombre" value="${client.name}" >
+                    <input type="text" name="name" class="form-control"  placeholder="Nombre" value="${client.name}" >
                   </div>
                   <div class="form-group">
                     <label for="lastname">Last Name:</label>
                     <input type="text" name="lastname" class="form-control" placeholder="Apellido" value="${client.lastname}" >
                   </div>
                   <div class="form-group">
-                    <label for="telephone">Telephone:</label>
-                    <input type="number" name="telephone" class="form-control" placeholder="Telefono" value="${client.telephone}" >
+                    <label for="phone">Phone:</label>
+                    <input type="number" name="phone" class="form-control" placeholder="Telefono" value="${client.phone}" >
                   </div>
                   <div class="form-group">
-                    <label for="adress">Adress:</label>
-                    <input type="text" name="adress" class="form-control" placeholder="Direccion" value="${client.adress}" >
+                    <label for="address">Address:</label>
+                    <input type="text" name="address" class="form-control" placeholder="Direccion" value="${client.address}" >
                   </div>
                   <div class="form-group">
                     <label for="adress">Cellphone:</label>
@@ -72,8 +72,8 @@
                         <th>Número documento</th>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Telephone</th>
-                        <th>Adress</th>
+                        <th>Phone</th>
+                        <th>Address</th>
                         <th>Cellphone</th>
               
                         <c:forEach items="${allClients}" var="clien">
@@ -81,8 +81,8 @@
                                 <td>${clien.nrodocument}</td>
                                 <td>${clien.name}</td>
                                 <td>${clien.lastname}</td>
-                                <td>${clien.telephone}</td>
-                                <td>${clien.adress}</td>
+                                <td>${clien.phone}</td>
+                                <td>${clien.address}</td>
                                 <td>${clien.cellphone}</td>
                             </tr>
                         </c:forEach> 

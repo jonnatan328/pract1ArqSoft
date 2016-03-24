@@ -81,18 +81,10 @@
 
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Clientes <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="./ClientServlet">Registrar</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Vehiculos <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="./VehicleServlet">Registrar</a></li>
-                                    </ul>
-                                </li>
+                                    <li class="active"><a href="./ClientServlet"  role="button" aria-haspopup="true" aria-expanded="false">Clientes </a></li>
+                                    <li><a href="./VehicleServlet"  role="button" aria-haspopup="true" aria-expanded="false">Vehiculos </a></li>
+                                    <li><a href="#"  role="button" aria-haspopup="true" aria-expanded="false">Vehiculos </a></li>
+                                
                             </ul>
                                                       
                         </div>
