@@ -26,9 +26,9 @@ public class Vehicle implements Serializable{
    @Column
    private int year;
    @Column
-   private byte image[];
+   private String image;
 
-    public Vehicle(String plate, String brand, String model, int year, byte[] image) {
+    public Vehicle(String plate, String brand, String model, int year, String image) {
         this.plate = plate;
         this.brand = brand;
         this.model = model;
@@ -71,11 +71,11 @@ public class Vehicle implements Serializable{
         this.year = year;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
    

@@ -3,21 +3,28 @@ package com.udea.controller;
 
 import com.udea.dao.VehicleDaoLocal;
 import com.udea.model.Vehicle;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
-@WebServlet(name = "VehicleServlet", urlPatterns = {"/uploadServlet"})
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+
+
+@WebServlet(name = "VehicleServlet", urlPatterns = {"/Vehicle"})
 @MultipartConfig(location="/tmp", fileSizeThreshold=1024*1024,maxFileSize=1024*1024*5, maxRequestSize=1024*1024*5*5)
 public class VehicleServlet extends HttpServlet {
     @EJB
@@ -50,17 +57,50 @@ public class VehicleServlet extends HttpServlet {
                 //convierto cadena de caracteres a entero
                 year=Integer.parseInt(yearstr);
             
-            //Tomo el valor del campo image del formulario
-            byte[] image=new byte[1024];
-//            final Part filePart = request.getPart("file");
-//            if(filePart!=null){ 
-//             System.out.println(filePart.getContentType());
-//            InputStream fileContent = filePart.getInputStream();
-//            
-//              
-//            //convierto inputStream a array de bytes
-//                //fileContent.read(image);
-//            }                           
+            
+            String image="ggd";
+             // Check that we have a file upload request
+            boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+             if (isMultipart) {
+	        	// Create a factory for disk-based file items
+	        	FileItemFactory factory = new DiskFileItemFactory();
+
+	        	// Create a new file upload handler
+	        	ServletFileUpload upload = new ServletFileUpload(factory);
+                        request.getInputStream();
+	            try {
+	            	// Parse the request
+	            	List<FileItem> items = upload.parseRequest(request);
+                        if (items != null && items.size() > 0) {
+                            Iterator iterator = items.iterator();
+                            while (iterator.hasNext()) {
+                                FileItem item = (FileItem) iterator.next();
+                                if (!item.isFormField()) {
+                                    String fileName = item.getName();	 
+                                    String root = getServletContext().getRealPath("/");
+                                    File path = new File(root + "/images");
+                                    
+                                    if (!path.exists()) {
+                                        boolean status = path.mkdirs();
+                                    }
+
+                                    File uploadedFile = new File(path + "/" + fileName);
+                                    //System.out.println(uploadedFile.getAbsolutePath());
+                                    PrintWriter out = response.getWriter();
+                                    out.println("<br/>File system context path (in TestServlet): " + path.getPath());
+                                    image=uploadedFile.getAbsolutePath();
+                                    item.write(uploadedFile);
+                                }
+                            }
+                        }
+	            } catch (FileUploadException e) {
+	                e.printStackTrace();
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        }
+            
+   
             //llamo el constructor del POJO para crear un objeto
             Vehicle vehicle=new Vehicle (plate, brand, model, year, image);
             //creamos una lista para cargar los objetos instanciados

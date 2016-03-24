@@ -25,7 +25,7 @@
                 <h1>Informacion del Vehiculo</h1>
             </div>
            <h1><p>Mensaje: ${message} ${message1} ${message2} ${message3} </p></h1>
-           <form action="./VehicleServlet" method="POST" role="form">
+           <form action="./VehicleServlet" method="POST" role="form" enctype="multipart/form-data">
                <div class="row">
                <div class="col-md-5">
                   <div class="form-group">
