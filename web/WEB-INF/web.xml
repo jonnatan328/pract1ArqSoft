@@ -14,6 +14,10 @@
             <file-size-threshold>1048576</file-size-threshold>
         </multipart-config>
     </servlet>
+    <servlet>
+        <servlet-name>SaleServlet</servlet-name>
+        <servlet-class>com.udea.controller.SaleServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClientServlet</servlet-name>
         <url-pattern>/ClientServlet</url-pattern>
@@ -21,6 +25,10 @@
     <servlet-mapping>
         <servlet-name>VehicleServlet</servlet-name>
         <url-pattern>/VehicleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaleServlet</servlet-name>
+        <url-pattern>/SaleServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

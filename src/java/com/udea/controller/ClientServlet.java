@@ -1,4 +1,3 @@
-
 package com.udea.controller;
 
 import com.udea.dao.ClientDaoLocal;
@@ -12,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class ClientServlet extends HttpServlet {
+
     @EJB
     private ClientDaoLocal clientDao;
 
@@ -31,37 +30,38 @@ public class ClientServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String action=request.getParameter("action");
+            String action = request.getParameter("action");
             //Tomo el valor del campo nrodocument del formulario
-            String clientIdstr=request.getParameter("nrodocument");
-            int nrodocument=0;
+            String clientIdstr = request.getParameter("nrodocument");
+            int nrodocument = 0;
             //Valido que el campo tenga algun dato
-            if(clientIdstr!=null && !clientIdstr.equals(""))
-            //convierto cadena de caracteres a entero
-                nrodocument=Integer.parseInt(clientIdstr);
+            if (clientIdstr != null && !clientIdstr.equals("")) //convierto cadena de caracteres a entero
+            {
+                nrodocument = Integer.parseInt(clientIdstr);
+            }
             //capturo los campos de nombre, apellido y direccion
-            String name=request.getParameter("name");
-            String lastname=request.getParameter("lastname");
-            String address=request.getParameter("address");
+            String name = request.getParameter("name");
+            String lastname = request.getParameter("lastname");
+            String address = request.getParameter("address");
             //Tomo el valor del campo telephone del formulario
-            String phone=request.getParameter("phone");
-      
+            String phone = request.getParameter("phone");
+
             //Tomo el valor del campo cellphone del formulario
-            String cellphone=request.getParameter("cellphone");
+            String cellphone = request.getParameter("cellphone");
             //llamo el constructor del POJO para crear un objeto
-            Client client=new Client (nrodocument, name, lastname, phone, address, cellphone);
+            Client client = new Client(nrodocument, name, lastname, phone, address, cellphone);
             //creamos una lista para cargar los objetos instanciados
-            
+
             List<Client> lista;
             //Llamo la accion de cada boton
-            if("Add".equalsIgnoreCase(action)){
+            if ("Add".equalsIgnoreCase(action)) {
                 clientDao.addClient(client);
-            }else if("Edit".equalsIgnoreCase(action)){
+            } else if ("Edit".equalsIgnoreCase(action)) {
                 clientDao.editClient(client);
-            
-            }else if("Delete".equalsIgnoreCase(action)){
+
+            } else if ("Delete".equalsIgnoreCase(action)) {
                 clientDao.deleteClient(nrodocument);
-            }else if("Search".equalsIgnoreCase(action)){                
+            } else if ("Search".equalsIgnoreCase(action)) {
                 client = clientDao.getClient(nrodocument);
                 request.setAttribute("message", client.getNrodocument());
                 request.setAttribute("message1", client.getName());
@@ -69,24 +69,22 @@ public class ClientServlet extends HttpServlet {
                 request.setAttribute("message3", client.getPhone());
                 request.setAttribute("message4", client.getAddress());
                 request.setAttribute("message5", client.getCellphone());
-                
+
                 request.getRequestDispatcher("/clientInformation.jsp").forward(request, response);
                 //request.getRequestDispatcher("/index.jsp").forward(request, response);
-            }
-            else if("SearchAll".equalsIgnoreCase(action)){
-                lista=clientDao.getAllClient();
+            } else if ("SearchAll".equalsIgnoreCase(action)) {
+                lista = clientDao.getAllClient();
                 System.out.println("Clientes");
             }
-                
-                
-                //Definicion de atributos para la carga de datos
-                request.setAttribute("client", client);
-                //llamo todos los objetos retornados para la tabla html
-                request.setAttribute("allClients", clientDao.getAllClient());
-                //Direcciono a index.jsp
-                
-                request.getRequestDispatcher("/clientInformation.jsp").forward(request, response);
-                //request.getRequestDispatcher("/index.jsp").forward(request, response);
+
+            //Definicion de atributos para la carga de datos
+            request.setAttribute("client", client);
+            //llamo todos los objetos retornados para la tabla html
+            request.setAttribute("allClients", clientDao.getAllClient());
+            //Direcciono a index.jsp
+
+            request.getRequestDispatcher("/clientInformation.jsp").forward(request, response);
+            //request.getRequestDispatcher("/index.jsp").forward(request, response);
         }
     }
 
