@@ -22,6 +22,13 @@
                 $("#brand").each(function() { this.selected = (this.value == valor); });
         });
     </script>
+    <script>
+        $( "#year" ).datepicker({
+             format: " yyyy", 
+                viewMode: "years", 
+                minViewMode: "years"
+    });
+    </script>
     </head>
     <body>
         <div class="container">
@@ -52,10 +59,12 @@
                     <label for="model">Model:</label>
                     <input type="text" name="model" class="form-control" placeholder="Modelo" value="${vehicle.model}" >
                   </div>
+                 
                   <div class="form-group">
                     <label for="year">Year:</label>
-                    <input type="number" name="year" class="form-control" placeholder="Año" value="${vehicle.year}" >
+                    <input type="date" id="year" name="year" class="form-control" placeholder="Año" value="${vehicle.year}" >
                   </div>
+                  
                   <div class="form-group">
                     <label for="image">Image:</label>
                     <input type="file" name="image" class="form-control" value="Seleccione un archivo" >
