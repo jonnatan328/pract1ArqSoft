@@ -87,7 +87,6 @@ public class VehicleServlet extends HttpServlet {
                                     File uploadedFile = new File(path + "/" + fileName);
                                     //System.out.println(uploadedFile.getAbsolutePath());
                                     PrintWriter out = response.getWriter();
-                                    out.println("<br/>File system context path (in TestServlet): " + path.getPath());
                                     image=uploadedFile.getAbsolutePath();
                                     item.write(uploadedFile);
                                 }
