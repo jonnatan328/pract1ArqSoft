@@ -17,6 +17,11 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <title>Información del vehiculo</title>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#brand").each(function() { this.selected = (this.value == valor); });
+        });
+    </script>
     </head>
     <body>
         <div class="container">
@@ -34,7 +39,14 @@
                   </div>
                   <div class="form-group">
                     <label for="brand">Brand:</label>
-                    <input type="text" name="brand" class="form-control" placeholder="Marca" value="${vehicle.brand}" >
+                    <select name="brand" id="brand" class="form-control">
+                        <option value="Chevrolet" selected>Chevrolet</option>
+                        <option value="Renault" >Renault</option>
+                        <option value="Mazda" >Mazda</option>
+                        <option value="Toyota" >Toyota</option>
+                        <option value="BMW" >BMW</option>
+                        <option value="Audi" >Audi</option>  
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="model">Model:</label>
