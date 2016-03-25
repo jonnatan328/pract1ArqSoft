@@ -83,7 +83,7 @@
                             <ul class="nav navbar-nav">
                                     <li class="active"><a href="./ClientServlet"  role="button" aria-haspopup="true" aria-expanded="false">Clientes </a></li>
                                     <li><a href="./VehicleServlet"  role="button" aria-haspopup="true" aria-expanded="false">Vehiculos </a></li>
-                                    <li><a href="#"  role="button" aria-haspopup="true" aria-expanded="false">Vehiculos </a></li>
+                                    <li><a href="#"  role="button" aria-haspopup="true" aria-expanded="false">Ventas </a></li>
                                 
                             </ul>
                                                       
