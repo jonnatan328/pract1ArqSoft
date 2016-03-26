@@ -61,32 +61,32 @@ public class ClientServlet extends HttpServlet {
             
             }else if("Delete".equalsIgnoreCase(action)){
                 clientDao.deleteClient(nrodocument);
-            }else if("Search".equalsIgnoreCase(action)){              
-                client = clientDao.getClient(nrodocument);
-                request.setAttribute("message", client.getNrodocument());
-                request.setAttribute("message1", client.getName());
-                request.setAttribute("message2", client.getLastname());
-                request.setAttribute("message3", client.getPhone());
-                request.setAttribute("message4", client.getAddress());
-                request.setAttribute("message5", client.getCellphone());
+            }else if("Search".equalsIgnoreCase(action)){
+                String documentstr=request.getParameter("document");
+                int document=Integer.parseInt(documentstr);
+                client = clientDao.getClient(document);
+                //Definicion de atributos para la carga de datos
+                request.setAttribute("client", client);
+//                request.setAttribute("message", client.getNrodocument());
+//                request.setAttribute("message1", client.getName());
+//                request.setAttribute("message2", client.getLastname());
+//                request.setAttribute("message3", client.getPhone());
+//                request.setAttribute("message4", client.getAddress());
+//                request.setAttribute("message5", client.getCellphone());
                 
                 request.getRequestDispatcher("/clientInformation.jsp").forward(request, response);
-                //request.getRequestDispatcher("/index.jsp").forward(request, response);
             }
             else if("SearchAll".equalsIgnoreCase(action)){
                 lista=clientDao.getAllClient();
                 System.out.println("Clientes");
             }
                 
-                
-                //Definicion de atributos para la carga de datos
-                request.setAttribute("client", client);
                 //llamo todos los objetos retornados para la tabla html
                 request.setAttribute("allClients", clientDao.getAllClient());
                 //Direcciono a index.jsp
                 
                 request.getRequestDispatcher("/clientInformation.jsp").forward(request, response);
-                //request.getRequestDispatcher("/index.jsp").forward(request, response);
+
         }
     }
 

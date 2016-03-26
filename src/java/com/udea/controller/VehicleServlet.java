@@ -115,18 +115,19 @@ public class VehicleServlet extends HttpServlet {
         } else if ("Delete".equalsIgnoreCase(action)) {
             vehicleDao.deleteVehicle(plate);
         } else if ("Search".equalsIgnoreCase(action)) {
-            vehicle = vehicleDao.getVehicle(plate);
-            request.setAttribute("message", vehicle.getPlate());
-            request.setAttribute("message1", vehicle.getBrand());
-            request.setAttribute("message2", vehicle.getModel());
-            request.setAttribute("message3", vehicle.getYear());
-
+            String platesearch=request.getParameter("document");
+            vehicle = vehicleDao.getVehicle(platesearch);
+//            request.setAttribute("message", vehicle.getPlate());
+//            request.setAttribute("message1", vehicle.getBrand());
+//            request.setAttribute("message2", vehicle.getModel());
+//            request.setAttribute("message3", vehicle.getYear());
+            request.setAttribute("vehicle", vehicle);
             request.getRequestDispatcher("/vehicleInformation.jsp").forward(request, response);
         } else if ("SearchAll".equalsIgnoreCase(action)) {
             lista = vehicleDao.getAllVehicle();
         }
         //Definicion de atributos para la carga de datos
-        request.setAttribute("vehicle", vehicle);
+        
         //llamo todos los objetos retornados para la tabla html
         request.setAttribute("allVehicles", vehicleDao.getAllVehicle());
         //Direcciono a index.jsp
