@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-@WebServlet(name = "VehicleServlet", urlPatterns = {"/Vehicle"})
-@MultipartConfig(location = "/tmp", fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
+@WebServlet
+@MultipartConfig
 public class VehicleServlet extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(VehicleServlet.class.getCanonicalName());
@@ -59,6 +59,7 @@ public class VehicleServlet extends HttpServlet {
         }
 
         String image = "";
+        
         final String saveDir = "vehicleIMG";
         final String path = this.getServletContext().getRealPath("") + File.separator
                 + saveDir;

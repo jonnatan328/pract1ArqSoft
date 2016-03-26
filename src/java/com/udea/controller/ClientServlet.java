@@ -61,15 +61,8 @@ public class ClientServlet extends HttpServlet {
             
             }else if("Delete".equalsIgnoreCase(action)){
                 clientDao.deleteClient(nrodocument);
-            }else if("Search".equalsIgnoreCase(action)){
-                String clientDocumentstr=request.getParameter("documentSearch");
-                int clientDocument=0;
-                //Valido que el campo tenga algun dato
-                if(clientDocumentstr!=null && !clientDocumentstr.equals("")){
-                //convierto cadena de caracteres a entero
-                clientDocument=Integer.parseInt(clientDocumentstr);
-                }
-                client = clientDao.getClient(clientDocument);
+            }else if("Search".equalsIgnoreCase(action)){              
+                client = clientDao.getClient(nrodocument);
                 request.setAttribute("message", client.getNrodocument());
                 request.setAttribute("message1", client.getName());
                 request.setAttribute("message2", client.getLastname());
