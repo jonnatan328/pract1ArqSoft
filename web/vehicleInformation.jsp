@@ -11,6 +11,18 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <title>Información del vehiculo</title>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#brand").each(function() { this.selected = (this.value == valor); });
+        });
+    </script>
+    <script>
+        $( "#year" ).datepicker({
+             format: " yyyy", 
+                viewMode: "years", 
+                minViewMode: "years"
+    });
+    </script>
     </head>
     <body>
         <div class="container">
@@ -18,32 +30,40 @@
             <div class="formulario-registro-cabecera" align="center" style="background-color:lightgrey; font-size:200%; ">
                 <h1>Informacion del Vehiculo</h1>
             </div>
-            <h1><p>Mensaje: ${message} ${message1} ${message2} ${message3} </p></h1>
-            <form action="./VehicleServlet" method="POST" role="form" enctype="multipart/form-data">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label for="plate">Plate:</label>
-                            <input type="text" name="plate" class="form-control"  placeholder="Placa" value="${vehicle.plate}">
-                        </div>
-                        <div class="form-group">
-                            <label for="brand">Brand:</label>
-                            <input type="text" name="brand" class="form-control" placeholder="Marca" value="${vehicle.brand}" >
-                        </div>
-                        <div class="form-group">
-                            <label for="model">Model:</label>
-                            <input type="text" name="model" class="form-control" placeholder="Modelo" value="${vehicle.model}" >
-                        </div>
-                        <div class="form-group">
-                            <label for="year">Year:</label>
-                            <input type="number" name="year" class="form-control" placeholder="Año" value="${vehicle.year}" >
-                        </div>
-                        <div class="form-group">
-                            <label for="image">Image:</label>
-                            <input type="file" name="image" class="form-control" value="Seleccione un archivo" >
-                        </div>
-
-                    </div>
+           <h1><p>Mensaje: ${message} ${message1} ${message2} ${message3} </p></h1>
+           <form action="./VehicleServlet" method="POST" role="form" enctype="multipart/form-data">
+               <div class="row">
+               <div class="col-md-5">
+                  <div class="form-group">
+                    <label for="plate">Plate:</label>
+                    <input type="text" name="plate" class="form-control"  placeholder="Placa" value="${vehicle.plate}">
+                  </div>
+                  <div class="form-group">
+                    <label for="brand">Brand:</label>
+                    <select name="brand" id="brand" class="form-control">
+                        <option value="Chevrolet" selected>Chevrolet</option>
+                        <option value="Renault" >Renault</option>
+                        <option value="Mazda" >Mazda</option>
+                        <option value="Toyota" >Toyota</option>
+                        <option value="BMW" >BMW</option>
+                        <option value="Audi" >Audi</option>  
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="model">Model:</label>
+                    <input type="text" name="model" class="form-control" placeholder="Modelo" value="${vehicle.model}" >
+                  </div>
+                 
+                  <div class="form-group">
+                    <label for="year">Year:</label>
+                    <input type="text" id="year" name="year" class="form-control" placeholder="Año" value="${vehicle.year}" >
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="image">Image:</label>
+                    <input type="file" name="image" class="form-control" value="Seleccione un archivo" >
+                  </div>
+                  
                 </div>
                 <div class="row">
                     <div class="col-md-5">
