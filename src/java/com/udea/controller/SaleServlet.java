@@ -9,6 +9,7 @@ import com.udea.model.Vehicle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class SaleServlet extends HttpServlet {
+
     private final static Logger LOGGER = Logger.getLogger(VehicleServlet.class.getCanonicalName());
 
     @EJB
@@ -38,25 +40,39 @@ public class SaleServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String clientId = request.getParameter("clientID");
-        String vehicleID = request.getParameter("vehiclePlate");
-        String currentDate = request.getParameter("currentDate");
+        String action = request.getParameter("action");
         
-        Client client = clientDao.getClient(Integer.parseInt(clientId));
-        if(client == null) {
-            return;
+        if (action.equalsIgnoreCase("add")) {
+            String clientId = request.getParameter("nrodocument");
+            String vehicleID = request.getParameter("plate");
+            int year = Integer.parseInt(request.getParameter("year"));
+            int month = Integer.parseInt(request.getParameter("month"));
+            int day = Integer.parseInt(request.getParameter("day"));
+
+            Client client;
+            Vehicle vehicle;
+
+            client = clientDao.getClient(Integer.parseInt(clientId));
+            if (client == null) {
+                return;
+            }
+            vehicle = vehicleDao.getVehicle(vehicleID);
+            if (vehicle == null) {
+                return;
+            }
+            Sale sale = new Sale(0, client, vehicle, new Date(year, month, day));
+
+            saleDao.addSale(sale);
+            request.getRequestDispatcher("saleInformation.jsp").forward(request, response);
+
+        } else if (action.equalsIgnoreCase("remove")) {
+            request.getRequestDispatcher("saleInformation.jsp").forward(request, response);
+        } else if (action.equalsIgnoreCase("searchall")) {
+            List<Sale> sales = saleDao.getAllSales();
+            request.setAttribute("allsales", sales);
+            request.getRequestDispatcher("saleInformation.jsp").forward(request, response);
         }
-        Vehicle vehicle = vehicleDao.getVehicle(vehicleID);
-        if(vehicle == null) {
-            return;
-        }
-        
-        Sale sale = new Sale(1,client,vehicle,new Date(2016,03,25));
-        saleDao.addSale(sale);
-        
-        request.setAttribute("client", client);
-        request.setAttribute("vehicle", vehicle);
-        
+
         request.getRequestDispatcher("saleInformation.jsp").forward(request, response);
     }
 
