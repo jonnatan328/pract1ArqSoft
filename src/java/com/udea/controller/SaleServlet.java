@@ -82,14 +82,13 @@ public class SaleServlet extends HttpServlet {
 
             client = clientDao.getClient(Integer.parseInt(clientId));
             if (client == null) {
-                PrintWriter out = response.getWriter();
-                return;
+                request.setAttribute("status", "Error, el cliente no existe");
+                request.getRequestDispatcher("saleInformation.jsp").forward(request, response);
             }
             vehicle = vehicleDao.getVehicle(vehicleID);
             if (vehicle == null) {
-                PrintWriter out = response.getWriter();
-                out.println("Vehicle doesn't exists");
-                return;
+                request.setAttribute("status", "Error, el vehiculo ingreaso no existe");
+                request.getRequestDispatcher("saleInformation.jsp").forward(request, response);
             }
             Sale sale = new Sale(0, client, vehicle, new Date(year, month, day), installments, installmentAmount);
 

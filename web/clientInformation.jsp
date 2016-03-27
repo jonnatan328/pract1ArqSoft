@@ -89,49 +89,52 @@
                             <input type="number" name="birthday" class="form-control" placeholder="Fecha nacimiento" value="${client.birthDay}" >
                         </div>
                     </div>
-    
-                <div class="row">
-                    <div class="col-md-8">
-                        <input type="submit" name="action" value="Add" class="btn btn-md btn-success"/>
-                        <input type="submit" name="action" value="Edit" class="btn btn-md btn-success"/>
-                        <input type="submit" name="action" value="Delete" class="btn btn-md btn-success"/>
-                        <a href="#modal" type="button" role="button" class="btn btn-md btn-succes" data-toggle="modal">Search</a>
-                        <input type="submit" name="action" value="SearchAll" class="btn btn-md btn-success"/>   
-                    </div>
-                </div>
-                </br>
-                <div class="row">  
-                    <div class="col-md-12">
 
-                        <table class="table table-hover">
-                            <thead style="font-size:150%;">
-                                <tr>
-                                    <th>Document</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Address</th>
-                                    <th>Phone</th>
-                                    <th>Cellphone</th>
-                                    <th>Birthday</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${allClients}" var="clien">            
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input type="submit" name="action" value="Add" class="btn btn-md btn-success"/>
+                            <input type="submit" name="action" value="Edit" class="btn btn-md btn-success"/>
+                            <input type="submit" name="action" value="Delete" class="btn btn-md btn-success"/>
+                            <a href="#modal" type="button" role="button" class="btn btn-md btn-succes" data-toggle="modal">Search</a>
+                            <input type="submit" name="action" value="SearchAll" class="btn btn-md btn-success"/>   
+                        </div>
+                    </div>
+                    <div class="row">
+
+                    </div>
+                    </br>
+                    <div class="row">  
+                        <div class="col-md-12">
+
+                            <table class="table table-hover">
+                                <thead style="font-size:150%;">
                                     <tr>
-                                        <td>${clien.nrodocument}</td>
-                                        <td>${clien.name}</td>
-                                        <td>${clien.lastname}</td>
-                                        <td>${clien.address}</td>
-                                        <td>${clien.phone}</td>
-                                        <td>${clien.cellphone}</td>
-                                        <td>${clien.birthDate}</td>
+                                        <th>Document</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Address</th>
+                                        <th>Phone</th>
+                                        <th>Cellphone</th>
+                                        <th>Birthday</th>
                                     </tr>
-                                </c:forEach>
-                            </tbody> 
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${allClients}" var="clien">            
+                                        <tr>
+                                            <td>${clien.nrodocument}</td>
+                                            <td>${clien.name}</td>
+                                            <td>${clien.lastname}</td>
+                                            <td>${clien.address}</td>
+                                            <td>${clien.phone}</td>
+                                            <td>${clien.cellphone}</td>
+                                            <td>${clien.birthDate}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody> 
+                            </table>
 
+                        </div>
                     </div>
-                </div>
             </form>
             <div id="modal" class="modal fade" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">

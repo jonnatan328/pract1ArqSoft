@@ -13,6 +13,7 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <div class="container">
         <form class="inline-form" method="POST" action="SaleServlet">
             <div class="row">
                 <div class="col-md-4">
@@ -61,6 +62,12 @@
             </div>
         </form>
 
+        <div class="row">
+             <div class="col-md-8">
+                 <p style="color: #f00">${status}</p>         
+                </div>
+        </div>
+
         <br>
         <form action="./SaleServlet" method="POST">
             <table class="table table-hover">
@@ -89,5 +96,6 @@
                 </tbody> 
             </table>
         </form>
+        </div>
     </body>
 </html>

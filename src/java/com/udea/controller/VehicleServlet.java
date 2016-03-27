@@ -26,6 +26,7 @@ import javax.servlet.http.Part;
 public class VehicleServlet extends HttpServlet {
 
     private final static Logger LOGGER = Logger.getLogger(VehicleServlet.class.getCanonicalName());
+    private final String SAVEDIR = "vehicleIMG";
 
     @EJB
     private VehicleDaoLocal vehicleDao;
@@ -44,109 +45,115 @@ public class VehicleServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         String action = request.getParameter("action");
-        //Tomo el valor del campo placa del formulario
-        String plate = request.getParameter("plate");
-        //Tomo el valor del campo brand del formulario
-        String brand = request.getParameter("brand");
-        //Tomo el valor del campo model del formulario
-        String model = request.getParameter("model");
-        //Tomo el valor del campo year del formulario
-        String yearstr = request.getParameter("year");
-        //Tomo el valor del campo color del formulario
-        String color = request.getParameter("color");
-        //Tomo el valor del campo fuel del formulario
-        String fuel = request.getParameter("fuel");
-        //Tomo el valor del campo transmission del formulario
-        String transmission = request.getParameter("transmission");
-        //Tomo el valor del campo doors del formulario
-        String doorssrt = request.getParameter("doors");
-        //Tomo el valor del campo price del formulario
-        String pricestr = request.getParameter("price");
+        Vehicle vehicle;
 
-        int year = 0;
-        int doors = 0;
-        long price = 0;
-        //Valido que los campos tengan datos
-        if (yearstr != null && !yearstr.equals("")) {
-            //convierto cadena de caracteres a int
-            year = Integer.parseInt(yearstr);
-        }
-        if (doorssrt != null && !doorssrt.equals("")) {
-            //convierto cadena de caracteres a int
-            doors = Integer.parseInt(doorssrt);
-        }
-        if (pricestr != null && !pricestr.equals("")) {
-            //convierto cadena de caracteres a long
-            price = Long.parseLong(pricestr);
-        }
+        if (action.equalsIgnoreCase("add")) {
+            //Tomo el valor del campo placa del formulario
+            String plate = request.getParameter("plate");
+            //Tomo el valor del campo brand del formulario
+            String brand = request.getParameter("brand");
+            //Tomo el valor del campo model del formulario
+            String model = request.getParameter("model");
+            //Tomo el valor del campo year del formulario
+            String yearstr = request.getParameter("year");
+            //Tomo el valor del campo color del formulario
+            String color = request.getParameter("color");
+            //Tomo el valor del campo fuel del formulario
+            String fuel = request.getParameter("fuel");
+            //Tomo el valor del campo transmission del formulario
+            String transmission = request.getParameter("transmission");
+            //Tomo el valor del campo doors del formulario
+            String doorssrt = request.getParameter("doors");
+            //Tomo el valor del campo price del formulario
+            String pricestr = request.getParameter("price");
 
-        String image = "";
-
-        final String saveDir = "vehicleIMG";
-        final String path = this.getServletContext().getRealPath("") + File.separator
-                + saveDir;
-        final Part filePart = request.getPart("image");
-        final String fileName = getFileName(filePart);
-
-        File fileSaveDir = new File(path);
-        if (!fileSaveDir.exists()) {
-            fileSaveDir.mkdir();
-        }
-
-        OutputStream out = null;
-        InputStream fileContent = null;
-        final PrintWriter writer = response.getWriter();
-        try {
-            out = new FileOutputStream(new File(path + File.separator + fileName));
-            fileContent = filePart.getInputStream();
-            int read = 0;
-            final byte[] bytes = new byte[1024];
-
-            while ((read = fileContent.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
+            int year = 0;
+            int doors = 0;
+            long price = 0;
+            //Valido que los campos tengan datos
+            if (yearstr != null && !yearstr.equals("")) {
+                //convierto cadena de caracteres a int
+                year = Integer.parseInt(yearstr);
             }
-            LOGGER.log(Level.INFO, "File {0} being uploaded to {1}", new Object[]{fileName, path});
-            image = path + File.separator + fileName;
-
-        } catch (FileNotFoundException e) {
-            writer.println("You either did not specify a file to upload or are "
-                    + "trying to upload a file to a protected location");
-            writer.println("<br/>Error: " + e.getMessage());
-            LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}",
-                    new Object[]{e.getMessage()});
-        } finally {
-            if (out != null) {
-                out.close();
+            if (doorssrt != null && !doorssrt.equals("")) {
+                //convierto cadena de caracteres a int
+                doors = Integer.parseInt(doorssrt);
             }
-            if (fileContent != null) {
-                fileContent.close();
+            if (pricestr != null && !pricestr.equals("")) {
+                //convierto cadena de caracteres a long
+                price = Long.parseLong(pricestr);
             }
-        }
 
-        //llamo el constructor del POJO para crear un objeto
-        Vehicle vehicle = new Vehicle(plate, brand, model, year,color,fuel,transmission,doors,price,image);
-        //creamos una lista para cargar los objetos instanciados
+            String image = "";
 
-        List<Vehicle> lista;
-        //Llamo la accion de cada boton
-        if ("Add".equalsIgnoreCase(action)) {
+            final String path = this.getServletContext().getRealPath("") + File.separator
+                    + SAVEDIR;
+            final Part filePart = request.getPart("image");
+            final String fileName = getFileName(filePart);
+
+            File fileSaveDir = new File(path);
+            if (!fileSaveDir.exists()) {
+                fileSaveDir.mkdir();
+            }
+
+            OutputStream out = null;
+            InputStream fileContent = null;
+            final PrintWriter writer = response.getWriter();
+            try {
+                out = new FileOutputStream(new File(path + File.separator + fileName));
+                fileContent = filePart.getInputStream();
+                int read = 0;
+                final byte[] bytes = new byte[1024];
+
+                while ((read = fileContent.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+                LOGGER.log(Level.INFO, "File {0} being uploaded to {1}", new Object[]{fileName, path});
+                image = path + File.separator + fileName;
+
+            } catch (FileNotFoundException e) {
+                writer.println("You either did not specify a file to upload or are "
+                        + "trying to upload a file to a protected location");
+                writer.println("<br/>Error: " + e.getMessage());
+                LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}",
+                        new Object[]{e.getMessage()});
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+                if (fileContent != null) {
+                    fileContent.close();
+                }
+            }
+
+            //llamo el constructor del POJO para crear un objeto
+            vehicle = new Vehicle(plate, brand, model, year, color, fuel, transmission, doors, price, image);
+            //creamos una lista para cargar los objetos instanciados
             vehicleDao.addVehicle(vehicle);
+
         } else if ("Edit".equalsIgnoreCase(action)) {
-            vehicleDao.editVehicle(vehicle);
+            //vehicleDao.editVehicle(vehicle);
 
         } else if ("Delete".equalsIgnoreCase(action)) {
-            vehicleDao.deleteVehicle(plate);
+            //   vehicleDao.deleteVehicle(plate);
+
         } else if ("Search".equalsIgnoreCase(action)) {
-            String platesearch = request.getParameter("document");
-            vehicle = vehicleDao.getVehicle(platesearch);
-//            request.setAttribute("message", vehicle.getPlate());
-//            request.setAttribute("message1", vehicle.getBrand());
-//            request.setAttribute("message2", vehicle.getModel());
-//            request.setAttribute("message3", vehicle.getYear());
+            String platesearch = request.getParameter("plate");
+            vehicle = vehicleDao.getVehicle(platesearch);            
+            if (vehicle == null) {
+                request.setAttribute("ERROR", "La placa del vehiculo ingresado no existe.");
+                request.getRequestDispatcher("/vehicleSearch.jsp").forward(request, response);
+            }
+            File file = new File(vehicle.getImage());
+            request.setAttribute("img", SAVEDIR + "/" + file.getName());
+            request.setAttribute("searchAll", false);
             request.setAttribute("vehicle", vehicle);
-            request.getRequestDispatcher("/vehicleInformation.jsp").forward(request, response);
+            request.getRequestDispatcher("/vehicleSearch.jsp").forward(request, response);
         } else if ("SearchAll".equalsIgnoreCase(action)) {
-            lista = vehicleDao.getAllVehicle();
+            List<Vehicle> list = vehicleDao.getAllVehicle();
+            request.setAttribute("searchAll", true);
+            request.setAttribute("allVehicles", list);
+            request.getRequestDispatcher("/vehicleSearch.jsp").forward(request, response);
         }
         //Definicion de atributos para la carga de datos
 

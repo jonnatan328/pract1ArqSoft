@@ -1,9 +1,3 @@
-<%-- 
-    Document   : vehicleInformation
-    Created on : 22/03/2016, 08:59:51 AM
-    Author     : acerpc
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="./index.jsp"  %>
 <!DOCTYPE html>
@@ -110,29 +104,12 @@
                         <input type="submit" name="action" value="Add" class="btn btn-md btn-success"/>
                         <input type="submit" name="action" value="Edit" class="btn btn-md btn-success"/>
                         <input type="submit" name="action" value="Delete" class="btn btn-md btn-success"/>
-                        <!--<input type="submit" name="action" value="Search" class="btn btn-md btn-success"/>-->
-                        <a href="#modal" type="button" role="button" class="btn btn-md btn-succes" data-toggle="modal">Search</a>
-                        <input type="submit" name="action" value="SearchAll" class="btn btn-md btn-success"/>
                     </div>
                 </div>     
 
 
                 <br>
-                <table class="table table-bordered">
-                    <th>Placa</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Año</th>
 
-                    <c:forEach items="${allVehicles}" var="vehi">
-                        <tr>
-                            <td>${vehi.plate}</td>
-                            <td>${vehi.brand}</td>
-                            <td>${vehi.model}</td>
-                            <td>${vehi.year}</td>
-                        </tr>
-                    </c:forEach> 
-                </table>
             </form>
             <div id="modal" class="modal fade" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">

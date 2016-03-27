@@ -15,11 +15,17 @@
         <link rel="stylesheet" href="css/style.css"  > 
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
+  
 
 
         <title>Pagina principal</title>
     </head>
     <body>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#dropdownvehicle").dropdown();
+            });
+        </script>
         <!-- <div class="container">
                      <a href="javascript:history.back()"><img src="<?php echo base_url()?>/img/atras.png" height="40" width="60" alt="Botón"/></a>
                      <a href="javascript:history.go(1)"><img src="<?php echo base_url()?>/img/adelante.png" height="43" width="66" alt="Botón"/></a>
@@ -75,11 +81,15 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li><a href="./ClientServlet"  role="button" aria-haspopup="true" aria-expanded="false">Clientes </a></li>
-                            <li><a href="vehicleInformation.jsp"  role="button" aria-haspopup="true" aria-expanded="false">Vehiculos </a></li>
+                            <li class="dropdown">
+                                <a href="#" id="dropdownvehicle" class="dropdown-toggle" data-toggle="dropdown" role="button">Vehicles <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="vehicleInformation.jsp">Add</a></li>
+                                    <li><a href="vehicleSearch.jsp">Search </a></li>
+                                </ul>
+                            </li>
                             <li><a href="saleInformation.jsp"  role="button" aria-haspopup="true" aria-expanded="false">Ventas </a></li>
-
-                        </ul>
-
+                        </ul>                        
                     </div>
                 </div>
             </nav>
