@@ -2,6 +2,7 @@
 package com.udea.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 @Entity
 @Table
@@ -31,18 +33,22 @@ public class Client implements Serializable {
    private String address;
    @Column
    private String cellphone;
+   @Column
+   @Temporal(javax.persistence.TemporalType.DATE)
+   private Date birthDate;
 
-   public Client(long nrodocument, String name, String lastname, String telephone, String adress, String cellphone) {
+    public Client() {
+    }
+
+    public Client(long nrodocument, String name, String lastname, String phone, String address, String cellphone, Date birthDate) {
         this.nrodocument = nrodocument;
         this.name = name;
         this.lastname = lastname;
-        this.phone = telephone;
-        this.address = adress;
+        this.phone = phone;
+        this.address = address;
         this.cellphone = cellphone;
-   }
-    
-   public Client() {
-    }
+        this.birthDate = birthDate;
+    }   
 
     public long getNrodocument() {
         return nrodocument;
@@ -80,8 +86,8 @@ public class Client implements Serializable {
         return address;
     }
 
-    public void setAddress(String adress) {
-        this.address = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getCellphone() {
@@ -91,6 +97,14 @@ public class Client implements Serializable {
     public void setCellphone(String cellphone) {
         this.cellphone = cellphone;
     }
-    
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+   
    
 }

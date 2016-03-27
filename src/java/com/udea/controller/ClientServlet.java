@@ -45,11 +45,13 @@ public class ClientServlet extends HttpServlet {
             String address = request.getParameter("address");
             //Tomo el valor del campo telephone del formulario
             String phone = request.getParameter("phone");
-
             //Tomo el valor del campo cellphone del formulario
             String cellphone = request.getParameter("cellphone");
+            //Tomo el valor del campo de birthday del formulario
+            String birthday = request.getParameter("birthday");
             //llamo el constructor del POJO para crear un objeto
-            Client client = new Client(nrodocument, name, lastname, phone, address, cellphone);
+            //Client client = new Client(nrodocument, name, lastname, phone, address, cellphone);
+            Client client = null;
             //creamos una lista para cargar los objetos instanciados
 
             List<Client> lista;

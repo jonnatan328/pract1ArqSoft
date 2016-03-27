@@ -21,26 +21,32 @@ import javax.persistence.Temporal;
 public class Sale implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    @Column
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date date;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id; 
     @JoinColumn (name = "client")
     @OneToOne
     private Client client;
     @JoinColumn (name = "vehicle")
     @OneToOne
     private Vehicle vehicle;
+    @Column
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date date;
+    @Column
+    private int installments;
+    @Column
+    private long installment_amount;
 
     public Sale() {
     }
 
-    public Sale(long id, Client client, Vehicle vehicle, Date date) {
+    public Sale(long id, Client client, Vehicle vehicle, Date date, int installments, long installments_amount) {
         this.id = id;
         this.client = client;
         this.vehicle = vehicle;
         this.date = date;
+        this.installments = installments;
+        this.installment_amount = installments_amount;
     }
 
     public long getId() {
@@ -74,4 +80,22 @@ public class Sale implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public int getInstallments() {
+        return installments;
+    }
+
+    public void setInstallments(int installments) {
+        this.installments = installments;
+    }
+
+    public long getInstallment_amount() {
+        return installment_amount;
+    }
+
+    public void setInstallment_amount(long installment_amount) {
+        this.installment_amount = installment_amount;
+    }
+
+
 }

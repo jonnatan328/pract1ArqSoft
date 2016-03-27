@@ -46,26 +46,48 @@ public class VehicleServlet extends HttpServlet {
         String action = request.getParameter("action");
         //Tomo el valor del campo placa del formulario
         String plate = request.getParameter("plate");
-        //capturo los campos de nombre, apellido y direccion
+        //Tomo el valor del campo brand del formulario
         String brand = request.getParameter("brand");
+        //Tomo el valor del campo model del formulario
         String model = request.getParameter("model");
         //Tomo el valor del campo year del formulario
         String yearstr = request.getParameter("year");
+        //Tomo el valor del campo color del formulario
+        String color = request.getParameter("color");
+        //Tomo el valor del campo fuel del formulario
+        String fuel = request.getParameter("fuel");
+        //Tomo el valor del campo transmission del formulario
+        String transmission = request.getParameter("transmission");
+        //Tomo el valor del campo doors del formulario
+        String doorssrt = request.getParameter("doors");
+        //Tomo el valor del campo price del formulario
+        String pricestr = request.getParameter("price");
+
         int year = 0;
-        //Valido que el campo tenga dato
+        int doors = 0;
+        long price = 0;
+        //Valido que los campos tengan datos
         if (yearstr != null && !yearstr.equals("")) {
-            //convierto cadena de caracteres a entero
+            //convierto cadena de caracteres a int
             year = Integer.parseInt(yearstr);
+        }
+        if (doorssrt != null && !doorssrt.equals("")) {
+            //convierto cadena de caracteres a int
+            doors = Integer.parseInt(doorssrt);
+        }
+        if (pricestr != null && !pricestr.equals("")) {
+            //convierto cadena de caracteres a long
+            price = Long.parseLong(pricestr);
         }
 
         String image = "";
-        
+
         final String saveDir = "vehicleIMG";
         final String path = this.getServletContext().getRealPath("") + File.separator
                 + saveDir;
         final Part filePart = request.getPart("image");
         final String fileName = getFileName(filePart);
-        
+
         File fileSaveDir = new File(path);
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
@@ -102,8 +124,8 @@ public class VehicleServlet extends HttpServlet {
         }
 
         //llamo el constructor del POJO para crear un objeto
-        Vehicle vehicle = new Vehicle(plate, brand, model, year, image);
-            //creamos una lista para cargar los objetos instanciados
+        Vehicle vehicle = new Vehicle(plate, brand, model, year,color,fuel,transmission,doors,price,image);
+        //creamos una lista para cargar los objetos instanciados
 
         List<Vehicle> lista;
         //Llamo la accion de cada boton
@@ -115,7 +137,7 @@ public class VehicleServlet extends HttpServlet {
         } else if ("Delete".equalsIgnoreCase(action)) {
             vehicleDao.deleteVehicle(plate);
         } else if ("Search".equalsIgnoreCase(action)) {
-            String platesearch=request.getParameter("document");
+            String platesearch = request.getParameter("document");
             vehicle = vehicleDao.getVehicle(platesearch);
 //            request.setAttribute("message", vehicle.getPlate());
 //            request.setAttribute("message1", vehicle.getBrand());
@@ -127,7 +149,7 @@ public class VehicleServlet extends HttpServlet {
             lista = vehicleDao.getAllVehicle();
         }
         //Definicion de atributos para la carga de datos
-        
+
         //llamo todos los objetos retornados para la tabla html
         request.setAttribute("allVehicles", vehicleDao.getAllVehicle());
         //Direcciono a index.jsp

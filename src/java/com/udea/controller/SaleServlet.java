@@ -39,28 +39,59 @@ public class SaleServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/plain");
         String action = request.getParameter("action");
-        
+
         if (action.equalsIgnoreCase("add")) {
             String clientId = request.getParameter("nrodocument");
             String vehicleID = request.getParameter("plate");
-            int year = Integer.parseInt(request.getParameter("year"));
-            int month = Integer.parseInt(request.getParameter("month"));
-            int day = Integer.parseInt(request.getParameter("day"));
+            String yearstr = request.getParameter("year");
+            String monthstr = request.getParameter("month");
+            String daystr = request.getParameter("day");
+            String installmentsstr = request.getParameter("installments");
+            String installmentAmountstr = request.getParameter("installmentAmount");
+
+            int year = 0;
+            int month = 0;
+            int day = 0;
+            int installments = 0;
+            long installmentAmount = 0;
+            if (yearstr != null && !yearstr.equals("")) {
+                //convierto cadena de caracteres a int
+                year = Integer.parseInt(yearstr);
+            }
+            if (monthstr != null && !monthstr.equals("")) {
+                //convierto cadena de caracteres a int
+                month = Integer.parseInt(monthstr);
+            }
+            if (daystr != null && !daystr.equals("")) {
+                //convierto cadena de caracteres a int
+                day = Integer.parseInt(daystr);
+            }
+            if (installmentsstr != null && !installmentsstr.equals("")) {
+                //convierto cadena de caracteres a int
+                installments = Integer.parseInt(installmentsstr);
+            }
+            if (installmentAmountstr != null && !installmentAmountstr.equals("")) {
+                //convierto cadena de caracteres a int
+                installmentAmount = Long.parseLong(installmentAmountstr);
+            }
 
             Client client;
             Vehicle vehicle;
 
             client = clientDao.getClient(Integer.parseInt(clientId));
             if (client == null) {
+                PrintWriter out = response.getWriter();
                 return;
             }
             vehicle = vehicleDao.getVehicle(vehicleID);
             if (vehicle == null) {
+                PrintWriter out = response.getWriter();
+                out.println("Vehicle doesn't exists");
                 return;
             }
-            Sale sale = new Sale(0, client, vehicle, new Date(year, month, day));
+            Sale sale = new Sale(0, client, vehicle, new Date(year, month, day), installments, installmentAmount);
 
             saleDao.addSale(sale);
             request.getRequestDispatcher("saleInformation.jsp").forward(request, response);
