@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="css/style.css"  > 
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
-        <title>JSP Page</title>
+        <title>Busqueda vehiculos</title>
     </head>
     <body>
 
@@ -18,10 +18,10 @@
                 <div class="col-md-6">
                     <form action="VehicleServlet" method="POST" class="form-inline">
                         <div class="form-group">
-                            <label for="plateid">Vehicle plate:</label>
-                            <input type="text" class="form-control" name="plate" id="plateid" placeholder="Plate" class="">
-                            <input type="submit" class="btn btn-default" name="action" value="search">
-                            <input type="submit" class="btn btn-default" name="action" value="searchAll">
+                            <label for="plateid">Matricula:</label>
+                            <input type="text" class="form-control" name="plate" id="plateid" placeholder="Matricula del vehiculo" class="">
+                            <input type="submit" class="btn btn-default btn-success" name="action" value="Buscar">
+                            <input type="submit" class="btn btn-default btn-success" name="action" value="Mostrar todos">
                         </div>
                     </form>
                 </div>
@@ -31,36 +31,36 @@
 
             <c:choose>
                 <c:when test="${searchAll == false}">
-                        <div class="row">
-                            <table class="table table-bordered">
-                                <th>Plate</th>
-                                <th>Brand</th>
-                                <th>Model</th>
-                                <tr>
-                                    <td>${vehicle.plate}</td>
-                                    <td>${vehicle.brand}</td>
-                                    <td>${vehicle.model}</td>
-                                </tr>
-                                <th>Year</th>
-                                <th>Color</th>
-                                <th>Fuel</th>
-                                <tr>
-                                    <td>${vehicle.year}</td>
-                                    <td>${vehicle.color}</td>
-                                    <td>${vehicle.fuel}</td>
-                                </tr>
-                                <th>Transmission</th>
-                                <th>Doors</th>
-                                <th>Price</th>                      
-                                <tr>
-                                    <td>${vehicle.transmission}</td>
-                                    <td>${vehicle.doors}</td>
-                                    <td>${vehicle.price}</td>
-                                </tr>
-                            </table>
-                        </div>
-            </c:when>
-            <c:when test="${searchAll == true}">
+                    <div class="row">
+                        <table class="table table-bordered">
+                            <th>Matricula</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <tr>
+                                <td>${vehicle.plate}</td>
+                                <td>${vehicle.brand}</td>
+                                <td>${vehicle.model}</td>
+                            </tr>
+                            <th>Año</th>
+                            <th>Color</th>
+                            <th>Combustible</th>
+                            <tr>
+                                <td>${vehicle.year}</td>
+                                <td>${vehicle.color}</td>
+                                <td>${vehicle.fuel}</td>
+                            </tr>
+                            <th>Transmision</th>
+                            <th>Puertas</th>
+                            <th>Precio</th>                      
+                            <tr>
+                                <td>${vehicle.transmission}</td>
+                                <td>${vehicle.doors}</td>
+                                <td>${vehicle.price}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </c:when>
+                <c:when test="${searchAll == true}">
                     <table class="table table-bordered">
                         <th>Placa</th>
                         <th>Marca</th>
@@ -78,13 +78,15 @@
                             </tr>
                         </c:forEach> 
                     </table>
-            </c:when>
-        </c:choose>
-            <h3 style="color: #F00">${ERROR}</h3>
-        <div>
-            <img src="${img}" alt="" class="img-responsive img-rounded">
+                </c:when>
+            </c:choose>
+            <h3 style="color: #d9534f">${ERROR}</h3>
+            <h3 style="color: #5cb85c">${SUCCESS}</h3>
+            <div >
+                <img style="width: 70% ;margin: 0 auto" src="${img}" alt="" class="img-responsive img-rounded">
+            </div>      
         </div>
-    </div>
-
-</body>
+        <br>
+        <br>
+    </body>
 </html>

@@ -44,12 +44,25 @@ public class VehicleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        //Tomo el valor del campo action del formulario
         String action = request.getParameter("action");
+        //defino la variable vehicle
         Vehicle vehicle;
 
-        if (action.equalsIgnoreCase("add")) {
-            //Tomo el valor del campo placa del formulario
+        //Verifico el tipo de accion a ejecutar.
+        if (action.equalsIgnoreCase("registrar") || action.equalsIgnoreCase("editar")) {
+            //Tomo el valor del campo plate del formulario
             String plate = request.getParameter("plate");
+
+            //valido que el vehiculo no exista en la base de datos
+            vehicle = vehicleDao.getVehicle(plate);
+            if (vehicle != null && !action.equalsIgnoreCase("editar")) {
+                request.setAttribute("ERROR", "El vehiculo ya está registrado.");
+                request.setAttribute("vehicle", vehicle);
+                request.getRequestDispatcher("vehicleInformation.jsp").forward(request, response);
+                return;
+            }
+
             //Tomo el valor del campo brand del formulario
             String brand = request.getParameter("brand");
             //Tomo el valor del campo model del formulario
@@ -67,103 +80,150 @@ public class VehicleServlet extends HttpServlet {
             //Tomo el valor del campo price del formulario
             String pricestr = request.getParameter("price");
 
+            //Defino las variables de tipo int
             int year = 0;
             int doors = 0;
             long price = 0;
-            //Valido que los campos tengan datos
+            
+            //Valido que los campos tengan datos y convierto a int
             if (yearstr != null && !yearstr.equals("")) {
-                //convierto cadena de caracteres a int
                 year = Integer.parseInt(yearstr);
             }
             if (doorssrt != null && !doorssrt.equals("")) {
-                //convierto cadena de caracteres a int
                 doors = Integer.parseInt(doorssrt);
             }
             if (pricestr != null && !pricestr.equals("")) {
-                //convierto cadena de caracteres a long
                 price = Long.parseLong(pricestr);
             }
 
+            //Declaro la variable de la ruta de la imagen.
             String image = "";
-
-            final String path = this.getServletContext().getRealPath("") + File.separator
-                    + SAVEDIR;
             final Part filePart = request.getPart("image");
-            final String fileName = getFileName(filePart);
+            
+            //Verifico si se ingresó algun archivo, si no es el caso la ruta de la imagen es vacia.
+            if (filePart.getSize()>0) {
 
-            File fileSaveDir = new File(path);
-            if (!fileSaveDir.exists()) {
-                fileSaveDir.mkdir();
+                //Defino la ruta donde se va a guardar la imagen.
+                final String path = this.getServletContext().getRealPath("") + File.separator
+                        + SAVEDIR;
+                //Obtengo el nombre del archivo.
+                final String fileName = getFileName(filePart);
+
+                //Verifico que el archivo tenga el formato de imagen (jpg,png,jpeg)
+                if (!fileName.contains(".jpg") && !fileName.contains(".png") && !fileName.contains(".jpeg")) {
+                    request.setAttribute("ERROR", "La imagen seleccionada debe tener el formato .jpg o .png.");
+                    vehicle = new Vehicle(plate, brand, model, year, color, fuel, transmission, doors, price, "");
+                    request.setAttribute("vehicle", vehicle);
+                    request.getRequestDispatcher("vehicleInformation.jsp").forward(request, response);
+                    return;
+                }
+
+                //Se crea el directorio donde se almacenaran las imagenes.
+                File fileSaveDir = new File(path);
+                if (!fileSaveDir.exists()) {
+                    fileSaveDir.mkdir();
+                }
+                
+                //Proceso las partes de las imagenes y se guarda en el disco.
+                OutputStream out = null;
+                InputStream fileContent = null;
+                final PrintWriter writer = response.getWriter();
+                try {
+                    out = new FileOutputStream(new File(path + File.separator + fileName));
+                    fileContent = filePart.getInputStream();
+                    int read = 0;
+                    final byte[] bytes = new byte[1024];
+
+                    while ((read = fileContent.read(bytes)) != -1) {
+                        out.write(bytes, 0, read);
+                    }
+                    LOGGER.log(Level.INFO, "File {0} being uploaded to {1}", new Object[]{fileName, path});
+                    image = path + File.separator + fileName;
+
+                } catch (FileNotFoundException e) {
+                    writer.println("You either did not specify a file to upload or are "
+                            + "trying to upload a file to a protected location");
+                    writer.println("<br/>Error: " + e.getMessage());
+                    LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}",
+                            new Object[]{e.getMessage()});
+                } finally {
+                    if (out != null) {
+                        out.close();
+                    }
+                    if (fileContent != null) {
+                        fileContent.close();
+                    }
+                }
             }
-
-            OutputStream out = null;
-            InputStream fileContent = null;
-            final PrintWriter writer = response.getWriter();
-            try {
-                out = new FileOutputStream(new File(path + File.separator + fileName));
-                fileContent = filePart.getInputStream();
-                int read = 0;
-                final byte[] bytes = new byte[1024];
-
-                while ((read = fileContent.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-                LOGGER.log(Level.INFO, "File {0} being uploaded to {1}", new Object[]{fileName, path});
-                image = path + File.separator + fileName;
-
-            } catch (FileNotFoundException e) {
-                writer.println("You either did not specify a file to upload or are "
-                        + "trying to upload a file to a protected location");
-                writer.println("<br/>Error: " + e.getMessage());
-                LOGGER.log(Level.SEVERE, "Problems during file upload. Error: {0}",
-                        new Object[]{e.getMessage()});
-            } finally {
-                if (out != null) {
-                    out.close();
-                }
-                if (fileContent != null) {
-                    fileContent.close();
-                }
-            }
-
             //llamo el constructor del POJO para crear un objeto
             vehicle = new Vehicle(plate, brand, model, year, color, fuel, transmission, doors, price, image);
-            //creamos una lista para cargar los objetos instanciados
-            vehicleDao.addVehicle(vehicle);
+           //Verifico si se desea registrar o editar un registro.
+            if (action.equalsIgnoreCase("registrar")) {
+                //Registro el vehiculo en la base de datos.
+                vehicleDao.addVehicle(vehicle);
+                request.setAttribute("SUCCESS", "Vehiculo ingresado exitosamente.");
+                request.getRequestDispatcher("vehicleInformation.jsp").forward(request, response);
+                return;
 
-        } else if ("Edit".equalsIgnoreCase(action)) {
-            //vehicleDao.editVehicle(vehicle);
+            }
+            //Edito el registro de la base de datos.
+            vehicleDao.editVehicle(vehicle);
+            request.setAttribute("SUCCESS", "Vehiculo editado exitosamente.");
+            request.getRequestDispatcher("vehicleInformation.jsp").forward(request, response);
+            return;
 
-        } else if ("Delete".equalsIgnoreCase(action)) {
-            //   vehicleDao.deleteVehicle(plate);
+        } else if (action.equalsIgnoreCase("borrar")) {
+            //Busco el registro que se desea eliminar.
+            String plate = request.getParameter("plate");
+            vehicle = vehicleDao.getVehicle(plate);
+            //Verifico que el registro exista.
+            if (vehicle == null) {
+                request.setAttribute("ERROR", "El vehiculo que desea eliminar no existe.");
+                request.getRequestDispatcher("vehicleInformation.jsp").forward(request, response);
+                return;
+            }
+            //Borro el registro de la base de datos.
+            vehicleDao.deleteVehicle(plate);
+            request.setAttribute("SUCCESS", "El vehiculo se ha eliminado correctamente.");
+            request.getRequestDispatcher("vehicleInformation.jsp").forward(request, response);
+            return;
 
-        } else if ("Search".equalsIgnoreCase(action)) {
+        } else if (action.equalsIgnoreCase("buscar")) {
+            //Busco el registro solicitado.
             String platesearch = request.getParameter("plate");
-            vehicle = vehicleDao.getVehicle(platesearch);            
+            vehicle = vehicleDao.getVehicle(platesearch);
+            //Verifico que el registro exista.
             if (vehicle == null) {
                 request.setAttribute("ERROR", "La placa del vehiculo ingresado no existe.");
                 request.getRequestDispatcher("/vehicleSearch.jsp").forward(request, response);
+                return;
             }
-            File file = new File(vehicle.getImage());
-            request.setAttribute("img", SAVEDIR + "/" + file.getName());
+            //Verifico si el vehiculo tiene una ruta de imagen.
+            if(vehicle.getImage().equalsIgnoreCase("")){
+                //Envio una imagen por defecto cuando no existe ruta.
+                request.setAttribute("img","img/nocar.jpg");
+            }
+            else{
+                //Obtengo la ruta de la imagen y la envio a la vista.
+                File file = new File(vehicle.getImage());
+                request.setAttribute("img", SAVEDIR + "/" + file.getName());
+            }
+            //Envio el vehiculo buscado.
             request.setAttribute("searchAll", false);
             request.setAttribute("vehicle", vehicle);
             request.getRequestDispatcher("/vehicleSearch.jsp").forward(request, response);
-        } else if ("SearchAll".equalsIgnoreCase(action)) {
+            return;
+        } else if (action.equalsIgnoreCase("mostrar todos")) {
+            //Obtengo todos los registros de vehiculos y los envio a la vista.
             List<Vehicle> list = vehicleDao.getAllVehicle();
             request.setAttribute("searchAll", true);
             request.setAttribute("allVehicles", list);
             request.getRequestDispatcher("/vehicleSearch.jsp").forward(request, response);
+            return;
         }
-        //Definicion de atributos para la carga de datos
-
-        //llamo todos los objetos retornados para la tabla html
-        request.setAttribute("allVehicles", vehicleDao.getAllVehicle());
-        //Direcciono a index.jsp
-        request.getRequestDispatcher("/vehicleInformation.jsp").forward(request, response);
-
     }
 
+    //Funcion para obtener el nombre de un archivo subido
     private String getFileName(final Part part) {
         final String partHeader = part.getHeader("content-disposition");
         LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);

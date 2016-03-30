@@ -4,6 +4,7 @@ import com.udea.dao.ClientDaoLocal;
 import com.udea.model.Client;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -29,66 +30,136 @@ public class ClientServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+
             String action = request.getParameter("action");
-            //Tomo el valor del campo nrodocument del formulario
-            String clientIdstr = request.getParameter("nrodocument");
-            int nrodocument = 0;
-            //Valido que el campo tenga algun dato
-            if (clientIdstr != null && !clientIdstr.equals("")) //convierto cadena de caracteres a entero
-            {
-                nrodocument = Integer.parseInt(clientIdstr);
-            }
-            //capturo los campos de nombre, apellido y direccion
-            String name = request.getParameter("name");
-            String lastname = request.getParameter("lastname");
-            String address = request.getParameter("address");
-            //Tomo el valor del campo telephone del formulario
-            String phone = request.getParameter("phone");
-            //Tomo el valor del campo cellphone del formulario
-            String cellphone = request.getParameter("cellphone");
-            //Tomo el valor del campo de birthday del formulario
-            String birthday = request.getParameter("birthday");
-            //llamo el constructor del POJO para crear un objeto
-            //Client client = new Client(nrodocument, name, lastname, phone, address, cellphone);
-            Client client = null;
-            //creamos una lista para cargar los objetos instanciados
+            Client client;
 
-            List<Client> lista;
-            //Llamo la accion de cada boton
-            if ("Add".equalsIgnoreCase(action)) {
-                clientDao.addClient(client);
-            } else if ("Edit".equalsIgnoreCase(action)) {
-                clientDao.editClient(client);
+            if (action.equalsIgnoreCase("Registrar") || action.equalsIgnoreCase("editar")) {
+                //Tomo el valor del campo nrodocument del formulario
+                String clientIdstr = request.getParameter("nrodocument");
+                long nrodocument = 0;
+                //Valido que el campo tenga algun dato
+                if (clientIdstr != null && !clientIdstr.equals("")) {
+                    //convierto cadena de caracteres a entero
+                    nrodocument = Long.parseLong(clientIdstr);
+                } else {
+                    request.setAttribute("ERROR", "Ingrese un numero de documento valido.");
+                    request.getRequestDispatcher("clientInformation.jsp").forward(request, response);
+                    return;
+                }
+                //capturo los campos de nombre, apellido y direccion
+                String name = request.getParameter("name");
+                String lastname = request.getParameter("lastname");
+                String address = request.getParameter("address");
+                //Tomo el valor del campo telephone del formulario
+                String phone = request.getParameter("phone");
+                //Tomo el valor del campo cellphone del formulario
+                String cellphone = request.getParameter("cellphone");
+                //Tomo los valores de la fecha de nacimiento del formulario
+                String yearstr = request.getParameter("year");
+                String monthstr = request.getParameter("month");
+                String daystr = request.getParameter("day");
+                
+                //creo las variables de tipo int de la fecha de nacimiento
+                int year = 0;
+                int month = 0;
+                int day = 0;
+                
+                //convierto las cadenas de string de la fecha de nacimiento a int
+                if(yearstr != null && !yearstr.equalsIgnoreCase("")){
+                    year = Integer.parseInt(yearstr);
+                }
+                if(monthstr != null && !monthstr.equalsIgnoreCase("")){
+                    month = Integer.parseInt(monthstr);
+                }
+                if(daystr != null && !daystr.equalsIgnoreCase("")){
+                    day = Integer.parseInt(daystr);
+                }
 
-            } else if ("Delete".equalsIgnoreCase(action)) {
+                //Verifico si el cliente ya existe y se esta añadiendo.
+                client = clientDao.getClient(nrodocument);
+                if (client != null && !action.equalsIgnoreCase("editar")) {
+                    request.setAttribute("ERROR", "El cliente ingresado ya existe.");
+                    client = new Client(nrodocument, name, lastname, phone, address, cellphone, new Date(year-1900,month-1,day));
+                    request.setAttribute("client", client);
+                    request.getRequestDispatcher("clientInformation.jsp").forward(request, response);
+                    return;
+                }
+
+                //Creo la instancia del cliente que se desea añadir o editar.
+                client = new Client(nrodocument, name, lastname, phone, address, cellphone, new Date(year-1900,month-1,day));
+                //Verifico si se desea añadir y o editar
+                if (action.equalsIgnoreCase("registrar")) {
+                    //Añado el cliente a la base de datos.
+                    request.setAttribute("SUCCESS", "Cliente registrado con exito.");
+                    clientDao.addClient(client);
+                } else {
+                    //Edito el cliente de la base de datos.
+                    request.setAttribute("SUCCESS", "Cliente editado con exito.");
+                    clientDao.editClient(client);
+                }
+                request.getRequestDispatcher("clientInformation.jsp").forward(request, response);
+                return;
+
+            } else if (action.equalsIgnoreCase("borrar")) {
+                //Obtengo la identificacion del cliente que se desea borrar.
+                String clientIdstr = request.getParameter("nrodocument");
+                long nrodocument = 0;
+                //Verifico que la identificacion ingresada exista.
+                if (clientIdstr != null && !clientIdstr.equals("")) {
+                    //Transformo el valor de la identificacioon a long.
+                    nrodocument = Long.parseLong(clientIdstr);
+                } else {
+                    request.setAttribute("ERROR", "Ingrese un numero de documento valido.");
+                    request.getRequestDispatcher("clientInformation.jsp").forward(request, response);
+                    return;
+                }
+
+                //Verifico que el cliente exista.
+                client = clientDao.getClient(nrodocument);
+                if (client == null) {
+                    request.setAttribute("ERROR", "El cliente que desea borrar no existe.");
+                    request.getRequestDispatcher("clientInformation.jsp").forward(request, response);
+                    return;
+                }
+                //Borro el cliente de la base de datos.
                 clientDao.deleteClient(nrodocument);
-            }else if("Search".equalsIgnoreCase(action)){
-                String documentstr=request.getParameter("document");
-                int document=Integer.parseInt(documentstr);
-                client = clientDao.getClient(document);
+                request.setAttribute("SUCCESS", "El cliente ha sido eliminado con exito.");
+                request.getRequestDispatcher("clientInformation.jsp").forward(request, response);
+                return;
+            } else if (action.equalsIgnoreCase("buscar")) {
+                //Obtengo la identificacion del cliente que se desea buscar.
+                String clientIdstr = request.getParameter("nrodocument");
+                long nrodocument = 0;
+                //Verifico que la identificacion ingresada exista.
+                if (clientIdstr != null && !clientIdstr.equals("")) {
+                    nrodocument = Long.parseLong(clientIdstr);
+                } else {
+                    request.setAttribute("ERROR", "Ingrese un numero de documento valido.");
+                    request.getRequestDispatcher("clientInformation.jsp").forward(request, response);
+                    return;
+                }
+                //Verifico que el cliente exista
+                client = clientDao.getClient(nrodocument);
+                if (client == null) {
+                    request.setAttribute("ERROR", "El cliente no existe.");
+                    request.getRequestDispatcher("clientInformation.jsp").forward(request, response);
+                    return;
+                }
                 //Definicion de atributos para la carga de datos
                 request.setAttribute("client", client);
-//                request.setAttribute("message", client.getNrodocument());
-//                request.setAttribute("message1", client.getName());
-//                request.setAttribute("message2", client.getLastname());
-//                request.setAttribute("message3", client.getPhone());
-//                request.setAttribute("message4", client.getAddress());
-//                request.setAttribute("message5", client.getCellphone());
-                
+                request.setAttribute("searchall", false);
                 request.getRequestDispatcher("/clientInformation.jsp").forward(request, response);
-            }
-            else if("SearchAll".equalsIgnoreCase(action)){
-                lista=clientDao.getAllClient();
-                System.out.println("Clientes");
-            }
-                
-                //llamo todos los objetos retornados para la tabla html
-                request.setAttribute("allClients", clientDao.getAllClient());
-                //Direcciono a index.jsp
-                
+                return;
+            } else if (action.equalsIgnoreCase("mostrar todos")) {
+                //Obtengo todos los registros de clientes de la base de datos.
+                List<Client> lista = clientDao.getAllClient();
+                //Definicion de atributos para la carga de datos
+                request.setAttribute("allClients", lista);
+                request.setAttribute("searchall", true);
                 request.getRequestDispatcher("/clientInformation.jsp").forward(request, response);
-
+                return;
+            }
         }
     }
 

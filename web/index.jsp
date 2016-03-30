@@ -40,18 +40,14 @@
                 <!-- Wrapper for slides-->
                 <div class="carousel-inner" role="listbox">
                     <div class="item active">
-                        <img src="http://placehold.it/1200x200?text=IMAGE" alt="Image">
+                        <img src="img/car1.jpg" alt="Image">
                         <div class="carousel-caption">
-                            <h3>Sell $</h3>
-                            <p>Money Money.</p>
                         </div>      
                     </div>
 
                     <div class="item">
-                        <img src="http://placehold.it/1200x200?text=Another Image Maybe" alt="Image">
+                        <img src="img/car2.png" alt="Image">
                         <div class="carousel-caption">
-                            <h3>More Sell $</h3>
-                            <p>Lorem ipsum...</p>
                         </div>      
                     </div>
                 </div> 
@@ -80,12 +76,12 @@
 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><a href="./ClientServlet"  role="button" aria-haspopup="true" aria-expanded="false">Clientes </a></li>
+                            <li><a href="clientInformation.jsp"  role="button" aria-haspopup="true" aria-expanded="false">Clientes </a></li>
                             <li class="dropdown">
-                                <a href="#" id="dropdownvehicle" class="dropdown-toggle" data-toggle="dropdown" role="button">Vehicles <span class="caret"></span></a>
+                                <a href="#" id="dropdownvehicle" class="dropdown-toggle" data-toggle="dropdown" role="button">Vehiculos <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="vehicleInformation.jsp">Add</a></li>
-                                    <li><a href="vehicleSearch.jsp">Search </a></li>
+                                    <li><a href="vehicleInformation.jsp">Añadir</a></li>
+                                    <li><a href="vehicleSearch.jsp">Buscar </a></li>
                                 </ul>
                             </li>
                             <li><a href="saleInformation.jsp"  role="button" aria-haspopup="true" aria-expanded="false">Ventas </a></li>

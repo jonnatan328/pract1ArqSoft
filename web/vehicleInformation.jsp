@@ -25,13 +25,13 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="plate">Plate:</label>
-                            <input type="text" name="plate" class="form-control"  placeholder="Placa" value="${vehicle.plate}">
+                            <label for="plate">Matricula:</label>
+                            <input type="text" name="plate" class="form-control"  placeholder="Matricula del vehiculo" required="true" value="${vehicle.plate}">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="brand">Brand:</label>
+                            <label for="brand">Marca:</label>
                             <select name="brand" id="brand" class="form-control">
                                 <option value="Chevrolet" selected>Chevrolet</option>
                                 <option value="Renault" >Renault</option>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="model">Model:</label>
+                            <label for="model">Modelo:</label>
                             <input type="text" name="model" class="form-control" placeholder="Modelo" value="${vehicle.model}" >
                         </div>
                     </div>
@@ -52,88 +52,63 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="plate">Year:</label>
-                            <input type="text" name="year" class="form-control"  placeholder="Año" value="${vehicle.year}">
+                            <label for="plate">Año:</label>
+                            <input type="number" name="year" class="form-control"  placeholder="Año de fabricación" value="${vehicle.year}">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="brand">Color:</label>
-                            <input type="text" name="color" class="form-control"  placeholder="Color" value="${vehicle.color}">
+                            <input type="text" name="color" class="form-control"  placeholder="Color del vehiculo" value="${vehicle.color}">
 
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="model">Fuel:</label>
-                            <input type="text" name="fuel" class="form-control" placeholder="Combustible" value="${vehicle.fuel}" >
+                            <label for="model">Combustible:</label>
+                            <input type="text" name="fuel" class="form-control" placeholder="Tipo de combustible" value="${vehicle.fuel}" >
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="plate">Transmission:</label>
-                            <input type="text" name="transmission" class="form-control"  placeholder="Transmision" value="${vehicle.transmission}">
+                            <label for="plate">Transmision:</label>
+                            <input type="text" name="transmission" class="form-control"  placeholder="Tipo de transmision" value="${vehicle.transmission}">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="brand">Doors:</label>
-                            <input type="text" name="doors" class="form-control"  placeholder="Puertas" value="${vehicle.doors}">
+                            <label for="brand">Puertas:</label>
+                            <input type="number" name="doors" class="form-control"  placeholder="Cantidad de puertas" value="${vehicle.doors}">
 
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="model">Price</label>
-                            <input type="text" name="price" class="form-control" placeholder="Precio" value="${vehicle.price}" >
+                            <label for="model">Precio:</label>
+                            <input type="number" name="price" class="form-control" placeholder="Precio del vehiculo" value="${vehicle.price}" >
                         </div>
                     </div>
                 </div>
                 <div class="row">    
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="image">Image:</label>
+                            <label for="image">Foto vehiculo:</label>
                             <input type="file" name="image" class="" value="Seleccione un archivo" >
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5">
-                        <input type="submit" name="action" value="Add" class="btn btn-md btn-success"/>
-                        <input type="submit" name="action" value="Edit" class="btn btn-md btn-success"/>
-                        <input type="submit" name="action" value="Delete" class="btn btn-md btn-success"/>
+                        <input type="submit" name="action" value="Registrar" class="btn btn-md btn-success"/>
+                        <input type="submit" name="action" value="Editar" class="btn btn-md btn-success"/>
+                        <input type="submit" name="action" value="Borrar" class="btn btn-md btn-success"/>
                     </div>
-                </div>     
-
-
-                <br>
-
+                </div>                 
+                <h3 style="color: #d9534f">${ERROR}</h3>
+                <h3 style="color: #5cb85c">${SUCCESS}</h3>
             </form>
-            <div id="modal" class="modal fade" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1>Ingresar Placa del vehiculo</h1>
-                        </div>
-                        <form action="./VehicleServlet" method="POST" role="form">
-                            <div class="modal-body">
-                                <div class="form-group">
-
-                                    <label for="document">Placa:</label>
-                                    <input type="text" name="platesearch" class="form-control" required="true"  placeholder="Placa" >
-
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" name="action"  class="btn btn-md btn-success">Search</button>
-                                <button type="button" class="btn btn-md btn-succes" data-dismiss="modal">Cloce</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </body>
 </html>

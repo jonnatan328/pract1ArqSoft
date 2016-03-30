@@ -10,76 +10,74 @@
         <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
 
-        <title>JSP Page</title>
+        <title>Información de venta</title>
     </head>
     <body>
         <div class="container">
-        <form class="inline-form" method="POST" action="SaleServlet">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="nrodocument">Identification:</label>
-                        <input type="number" name="nrodocument" class="form-control" required="true"  placeholder="Identificacion">
+            <form class="inline-form" method="POST" action="SaleServlet">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nrodocument">Identificacion:</label>
+                            <input type="number" name="nrodocument" class="form-control"  placeholder="Identificacion">
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="name">Plate vehicle:</label>
-                        <input type="text" name="plate" class="form-control" required="true" placeholder="Matricula vehiculo" >
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="name">Matricula:</label>
+                            <input type="text" name="plate" class="form-control"  placeholder="Matricula vehiculo" >
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class=" form-inline">
-                        <label for="year">Sale date:</label>
-                        <br>
-                        <div>                    
-                            <input  type="number" name="year" class="form-control" placeholder="Año">                    
-                            <input  type="number" name="month" class="form-control" placeholder="Mes">                 
-                            <input  type="number" name="day" class="form-control" placeholder="Dia">
+                    <div class="col-md-4">
+                        <div class=" form-inline" >
+                            <label for="year">Fecha de venta:</label>
+                            <br>
+                            <div>                    
+                                <input style="width: 80px"  type="number" name="year" class="form-control" placeholder="Año">                    
+                                <input style="width: 80px"  type="number" name="month" class="form-control" placeholder="Mes">                 
+                                <input style="width: 80px"  type="number" name="day" class="form-control" placeholder="Dia">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="nrodocument">Installments:</label>
-                        <input type="number" name="installments" class="form-control" required="true"  placeholder="Cuotas">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nrodocument">Cuotas:</label>
+                            <input type="number" name="installments" class="form-control" placeholder="Cantidad de cuotas">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="name">Valor por cuota:</label>
+                            <input type="number" name="installmentAmount" class="form-control" placeholder="Valor por cuota" >
+                        </div>
+                    </div>  
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <input type="submit" name="action" value="Registrar" id="addID" class="btn btn-md btn-success"/>                        
+                        <input type="submit" name="action" value="Mostrar todos" class="btn btn-md btn-success">
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="name">Installments amount:</label>
-                        <input type="text" name="installmentAmount" class="form-control" required="true" placeholder="Valor por cuota" >
-                    </div>
-                </div>  
-            </div>
+            </form>
+
             <div class="row">
                 <div class="col-md-8">
-                    <input type="submit" name="action" value="Add" id="addID" class="btn btn-md btn-success"/>
-                    <input type="submit" name="action" value="Delete" class="btn btn-md btn-success"/>          
+                    <p style="color: #d9534f">${ERROR}</p>
+                    <p style="color: #5cb85c">${SUCCESS}</p>  
                 </div>
             </div>
-        </form>
-
-        <div class="row">
-             <div class="col-md-8">
-                 <p style="color: #f00">${status}</p>         
-                </div>
-        </div>
-
-        <br>
-        <form action="./SaleServlet" method="POST">
-            <table class="table table-hover">
-                <input type="submit" name="action" value="SearchAll" class="btn btn-md btn-success">
+            <br>     
+            <table class="table table-hover">                
                 <thead style="font-size:150%;">
                     <tr>
                         <th>ID</th>
-                        <th>Client</th>
-                        <th>Vehicle</th>
-                        <th>Date</th>
-                        <th>Installments</th>
-                        <th>installment amount</th>
+                        <th>Cliente</th>
+                        <th>Vehiculo</th>
+                        <th>Fecha de venta</th>
+                        <th>Cuotas</th>
+                        <th>Valor/cuota</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,7 +93,7 @@
                     </c:forEach>
                 </tbody> 
             </table>
-        </form>
+
         </div>
     </body>
 </html>
